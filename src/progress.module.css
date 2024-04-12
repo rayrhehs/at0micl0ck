@@ -1,0 +1,10 @@
+.progress {
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  /* this changes the size of the clock -> 15vw for final */
+  width: 200px;
+}
+
+.svg {
+  display: block;
+  width: 100%;
+}

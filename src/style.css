@@ -1,0 +1,89 @@
+* {
+  font-family: "Space Mono", monospace;
+  font-weight: 400;
+  font-style: normal;
+}
+
+.container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.input-container {
+  display: flex;
+  align-items: center;
+  width: auto;
+  font-size: 30px;
+  color: white;
+}
+
+.time-input {
+  color: white;
+  text-align: center;
+  width: 35px;
+  height: 25px;
+  margin: 2px;
+  font-size: 30px;
+  outline: none;
+  background-color: transparent;
+  border: none;
+}
+
+.time-input::placeholder {
+  color: white;
+}
+
+.time-title {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  font-size: 30px;
+}
+
+.button {
+  height: 30px;
+  width: 80px;
+  padding: 0px 10px 0px 10px;
+  margin: 15px;
+  background-color: transparent;
+  color: white;
+  border: solid white 2px;
+  border-radius: 10px;
+}
+
+.button:hover {
+  cursor: pointer;
+}
+/* 
+#start {
+  background-color: #00ff94;
+  color: black;
+  height: 30px;
+  border: none;
+}
+
+#start:active {
+  background-color: #00c472;
+  color: black;
+  height: 30px;
+  border: none;
+  transition: background-color 0.2s ease;
+}
+
+#stop {
+  background-color: #ffb703;
+  color: black;
+  height: 30px;
+  border: none;
+}
+
+#stop {
+  background-color: #bf8900;
+  color: black;
+  height: 30px;
+  border: none;
+  transition: background-color 0.2s ease;
+} */
