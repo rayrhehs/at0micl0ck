@@ -2,6 +2,7 @@
   font-family: "Space Mono", monospace;
   font-weight: 400;
   font-style: normal;
+  user-select: none;
 }
 
 .container {
@@ -15,46 +16,97 @@
 .input-container {
   display: flex;
   align-items: center;
+  justify-content: center;
   width: auto;
-  font-size: 30px;
+  font-size: 24px;
   color: white;
+  letter-spacing: 0;
+  margin-right: 2px;
 }
 
 .time-input {
   color: white;
   text-align: center;
-  width: 35px;
-  height: 25px;
-  margin: 2px;
-  font-size: 30px;
+  width: 40px;
+  height: 35px;
+  font-size: 24px;
   outline: none;
   background-color: transparent;
   border: none;
+  caret-color: transparent;
+}
+
+.time-input:focus {
+  background-color: white;
+  color: black;
+  border-radius: 6px;
+}
+
+.time-input:focus::placeholder {
+  color: rgb(0, 0, 0);
 }
 
 .time-input::placeholder {
-  color: white;
+  color: rgb(172, 172, 172);
 }
 
 .time-title {
   display: flex;
   justify-content: center;
   text-align: center;
-  font-size: 30px;
+  font-size: 24px;
+  margin-right: 0px;
+  letter-spacing: 2.9px;
 }
 
-.button {
+.button-active {
   height: 30px;
   width: 80px;
-  padding: 0px 10px 0px 10px;
+  padding: 0px 10px 2.5px 10px;
   margin: 15px;
   background-color: transparent;
   color: white;
   border: solid white 2px;
   border-radius: 10px;
+  transition-property: color, border;
+  transition-duration: 0.5s;
+  transition-timing-function: ease-out;
 }
 
-.button:hover {
+.button-active:hover,
+.button-inactive:hover {
+  cursor: pointer;
+}
+
+.button-inactive {
+  height: 30px;
+  width: 80px;
+  padding: 0px 10px 2.5px 10px;
+  margin: 15px;
+  background-color: transparent;
+  color: rgb(172, 172, 172);
+  border: solid rgb(172, 172, 172) 2px;
+  border-radius: 10px;
+  transition-property: color, border;
+  transition-duration: 0.3s;
+  transition-timing-function: ease-out;
+}
+
+#timer-end {
+  display: flex;
+  align-items: center;
+  margin-left: 4px;
+}
+
+#end-time {
+  font-size: 13px;
+}
+
+#bell-icon {
+  margin: 2px 8px 0px 0px;
+}
+
+.logo:hover {
   cursor: pointer;
 }
 /* 

@@ -4,6 +4,7 @@ import "./style.css";
 
 function Countdown() {
   const [isRunning, setIsRunning] = useState(false);
+  const [timeOver, setTimeOver] = useState(false);
   const [timeRemaining, setTimeRemaining] = useState(0);
   // used to see if clock has been initialized and started
   // useful for calc of timeRemaining which is used until reset
@@ -14,6 +15,8 @@ function Countdown() {
   const [inputMin, setInputMin] = useState("");
   const [inputSec, setInputSec] = useState("");
 
+  const [buttonActivity, setButtonActivity] = useState("button-inactive");
+
   const intervalIdRef = useRef(null);
 
   // raw time since epic (big ass number)
@@ -21,6 +24,9 @@ function Countdown() {
 
   // difference in time in ms
   const initTimeRef = useRef(0);
+
+  // ringtone
+  const ringtoneRef = useRef(new Audio("./ringtone.mp3"));
 
   useEffect(() => {
     if (isRunning) {
@@ -32,18 +38,36 @@ function Countdown() {
     };
   }, [isRunning]);
 
+  useEffect(() => {
+    if (timeOver) {
+      ringtoneRef.current.play();
+      ringtoneRef.current.volume = 0.15;
+    } else {
+      ringtoneRef.current.pause();
+    }
+  }, [timeOver]);
+
   function getHour(event) {
     let value = event.target.value.replace(/\D/g, "").slice(0, 2);
+    if (value != 0) {
+      setButtonActivity("button-active");
+    }
     setInputHour(value);
   }
 
   function getMin(event) {
     let value = event.target.value.replace(/\D/g, "").slice(0, 2);
+    if (value != 0) {
+      setButtonActivity("button-active");
+    }
     setInputMin(value);
   }
 
   function getSec(event) {
     let value = event.target.value.replace(/\D/g, "").slice(0, 2);
+    if (value != 0) {
+      setButtonActivity("button-active");
+    }
     setInputSec(value);
   }
 
@@ -61,25 +85,33 @@ function Countdown() {
     if (timeDiff > 0) {
       setTimeRemaining(timeDiff);
     } else {
+      setTimeOver(true);
       reset();
     }
   }
 
   function start() {
-    setIsRunning(true);
-    if (timerInit == 0) {
-      let initialTime = calcTime();
-      initTimeRef.current = initialTime;
-      setTimeRemaining(initTimeRef.current);
-      setTimerInit(1);
+    if (calcTime() != 0) {
+      setButtonActivity("button-active");
+      setIsRunning(true);
+      if (timerInit == 0) {
+        let initialTime = calcTime();
+        initTimeRef.current = initialTime;
+        setTimeRemaining(initTimeRef.current);
+        setTimerInit(1);
+      }
+      setTimeOver(false);
     }
   }
 
   function stop() {
     setIsRunning(false);
+    setTimeOver(false);
   }
 
   function reset() {
+    setButtonActivity("button-inactive");
+    // controls progress bar
     setTimeRemaining(initTimeRef.current);
     setIsRunning(false);
     setTimerInit(0);
@@ -110,10 +142,43 @@ function Countdown() {
     return progFormula;
   }
 
+  function calcEndTime() {
+    // endTimeRef.current contains the ending time of counter in MS since epoch
+    var time = new Date(endTimeRef.current); // give me date from given MS
+    let hours = time.getHours();
+    let minutes = time.getMinutes();
+    let dayTime = "";
+    if (hours > 12) {
+      hours -= 12;
+      dayTime = "PM";
+    } else {
+      dayTime = "AM";
+    }
+    let futureTime = "";
+
+    if (hours == 0) {
+      futureTime =
+        String(hours).padStart(2, "0") +
+        ":" +
+        String(minutes).padStart(2, "0") +
+        " " +
+        dayTime;
+    } else {
+      futureTime =
+        hours + ":" + String(minutes).padStart(2, "0") + " " + dayTime;
+    }
+    return futureTime;
+  }
+
+  function pauseRingtone() {
+    setTimeOver(false);
+  }
+
   return (
     <div className="container">
       <Progress
         progress={calcProgress()}
+        className={"clock1"}
         inputElements={
           !isRunning ? (
             timerInit == 0 ? (
@@ -152,25 +217,43 @@ function Countdown() {
             <span className="time-title">{formatTime()}</span>
           )
         }
+        endTime={
+          timerInit == 1 ? (
+            <div id="timer-end">
+              <img id="bell-icon" src="./bell_white.svg" />
+              <span id="end-time">{calcEndTime()}</span>
+            </div>
+          ) : null
+        }
+        logo={
+          <div>
+            <img className="logo" src="./logo.svg" onClick={pauseRingtone} />
+          </div>
+        }
       />
       <div className="buttons">
         {!isRunning ? (
-          <button class="button" id="start" onClick={start}>
+          <button class={buttonActivity} id="start" onClick={start}>
             start
           </button>
         ) : (
-          <button class="button" id="stop" onClick={stop}>
+          <button class="button-active" id="stop" onClick={stop}>
             pause
           </button>
         )}
-        <button class="button" onClick={reset}>
+        <button class="button-active" onClick={reset}>
           reset
         </button>
       </div>
-      {/* <h1>{calcProgress()}%</h1>
-      <h1>
-        time ratio: {timeRemaining} / {initTimeRef.current} ms
-      </h1> */}
+      {/*
+      <div className="diag">
+        <h1>Diagnostic</h1> 
+        <h1>{calcProgress()}%</h1>
+        <h1>{calcEndTime()}</h1>
+        <h1>
+            time ratio: {timeRemaining} / {initTimeRef.current} ms
+        </h1>
+      </div> */}
     </div>
   );
 }

@@ -65,6 +65,8 @@ function _Progress({
   suffix = "%",
   title,
   inputElements,
+  endTime,
+  logo,
 }) {
   progress = Math.round(progress * 100) / 100;
   const width = 200;
@@ -99,7 +101,6 @@ function _Progress({
             ))}
           </linearGradient>
         </defs>
-
         {/* number text */}
         {!hideValue && (
           <text
@@ -115,17 +116,36 @@ function _Progress({
           </text>
         )}
 
-        {!hideValue && (
+        {/* end of timer container */}
+        {
           <foreignObject
-            x={center - 77}
-            y={center - 20}
-            width={160}
-            height={40}
+            x={center - 42}
+            y={center - 47}
+            width={180}
+            height={50}
           >
-            {/* Embed HTML content using foreignObject */}
+            {endTime}
+          </foreignObject>
+        }
+
+        {/* input boxes container */}
+        {
+          <foreignObject
+            x={center - 90}
+            y={center - 19}
+            width={180}
+            height={50}
+          >
             {inputElements}
           </foreignObject>
-        )}
+        }
+
+        {/* logo image */}
+        {
+          <foreignObject x={center - 15} y={center + 32} width={50} height={50}>
+            {logo}
+          </foreignObject>
+        }
 
         {/* text under number */}
         <text
@@ -136,7 +156,6 @@ function _Progress({
         >
           {subtitle}
         </text>
-
         {/* inner progress circle */}
         <circle
           transform={`rotate(${rotate} ${center} ${center})`}
@@ -151,7 +170,6 @@ function _Progress({
           stroke={background}
           strokeLinecap="round"
         ></circle>
-
         {/* outer progress circle */}
         <circle
           style={{
@@ -169,7 +187,6 @@ function _Progress({
           stroke={`url(#gradient${unique})`}
           strokeLinecap="round"
         ></circle>
-
         {/* starter ball */}
         {!hideBall && (
           <circle
@@ -189,7 +206,6 @@ function _Progress({
             strokeLinecap="round"
           ></circle>
         )}
-
         {/* end ball */}
         {!hideBall && (
           <circle
